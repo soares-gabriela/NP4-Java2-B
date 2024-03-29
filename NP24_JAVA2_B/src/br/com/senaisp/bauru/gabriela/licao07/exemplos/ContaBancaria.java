@@ -1,28 +1,27 @@
-package br.senai.sp.bauru.gabriela.licao07.exemplos;
+package br.com.senaisp.bauru.gabriela.licao07.exemplos;
 
 public class ContaBancaria {
-	//fields estaticos 
-	public static int ultNumero = 0;
-	//fields
+	//Fields estaticos
+		private static int ultNumero = 0;
+		//Fields
 		private int agencia;
 		private int banco;
 		private int numeroConta;
 		private double saldo;
-		//constructor
+		//Constructor
 		public ContaBancaria() {
 			banco = 123;
 			agencia = 1;
-			numeroConta = 0;
+			numeroConta = ++ultNumero;
 			saldo = 50;
 		}
-		public ContaBancaria (int ba, int ag, int nc, double sal) {
+		public ContaBancaria(int ba, int ag, int nc, double sal) {
 			setBanco(ba);
 			setAgencia(ag);
 			setNumeroConta(nc);
 			setSaldo(sal);
 		}
-		
-		//metodos
+		//Métodos
 		public int getAgencia() {
 			return agencia;
 		}
@@ -47,4 +46,5 @@ public class ContaBancaria {
 		public void setSaldo(double saldo) {
 			this.saldo = saldo;
 		}
+
 }
