@@ -60,7 +60,32 @@ public class ProdutoSimples {
 		this.custo = custo;
 	}
 
-	//
+	@Override
+	public String toString() {
+		return "Id: " + getId() + "\n" + "Descrição: " + getDescricao() + "\n" + "Saldo: " + getSaldo() + "\n"
+				+ "Custo: " + getCusto();
+	}
+
+	public void gravar() throws SQLException {
+		PreparedStatement stmt = conn
+				.prepareStatement("update produto set descricao = ?, " + "saldo=?, custo=? where id=?");
+		stmt.setString(1, getDescricao());
+		stmt.setInt(2, getSaldo());
+		stmt.setDouble(3, getCusto());
+		stmt.setInt(4, getId());
+		// disparando a query
+		int nRegs = stmt.executeUpdate();
+		System.out.println(nRegs + " registro(s) afetado(s)");
+	}
+
+	public void apagar() throws SQLException {
+		PreparedStatement stmt = conn.prepareStatement("delete from produto where id = ?");
+		stmt.setInt(1, getId());
+		// disparando a query
+		int nRegs = stmt.executeUpdate();
+		System.out.println(nRegs + " registro(s) afetado(s)");
+	}
+
 	public static ProdutoSimples create(String des, int sal, double cus) throws SQLException {
 		ProdutoSimples ret = new ProdutoSimples();
 		ret.setDescricao(des);
@@ -85,6 +110,30 @@ public class ProdutoSimples {
 			System.out.println(e.getMessage());
 		}
 		//
+		return ret;
+	}
+
+	public static ProdutoSimples findByPK(int cod) throws Exception {
+		ProdutoSimples ret = new ProdutoSimples();
+		if (cod > 0) {
+			PreparedStatement stmt = ret.conn
+					.prepareStatement("select id, descricao, saldo, custo" + " from produto where id = ?");
+			// colocando o parametro da query
+			stmt.setInt(1, cod);
+			// executando a query
+			ResultSet rs = stmt.executeQuery();
+			// verificando se encontrou algo
+			if (rs.next()) {
+				ret.setId(rs.getInt(1));
+				ret.setDescricao(rs.getString(2));
+				ret.setSaldo(rs.getInt(3));
+				ret.setCusto(rs.getDouble(4));
+			} else {
+				throw new Exception("O código deve ser maior que zero!");
+			}
+		} else {
+			throw new Exception("O código deve ser maior que zero!");
+		}
 		return ret;
 	}
 }
